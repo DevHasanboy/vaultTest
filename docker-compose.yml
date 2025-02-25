@@ -32,7 +32,7 @@ services:
       - postgres
 
     ports:
-      - "8870:8870"  # Portni moslashtirish
+      - "8888:8888"  # Portni moslashtirish
     networks:
       - vault_network
 

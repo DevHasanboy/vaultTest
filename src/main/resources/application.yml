@@ -15,8 +15,21 @@ spring:
       read-timeout: 30000
   config:
     import: vault://secret/application
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: 7777777
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+
 server:
-  port: 8870
+  port: 8888
 
 
 
