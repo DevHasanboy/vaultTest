@@ -1,0 +1,69 @@
+version: '3.8'
+services:
+  vault:
+    image: hashicorp/vault:1.18.4
+    container_name: vault-dev
+    command: server -dev -dev-listen-address="0.0.0.0:8200"
+    ports:
+      - "8200:8200"
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: root
+    volumes:
+      - vault-data:/vault/file
+    restart: unless-stopped
+
+  spring-boot-app:
+    build:
+      context: .
+      dockerfile: Dockerfile  # Dockerfile joylashgan papka
+    container_name: spring-boot-app
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - SPRING_CLOUD_VAULT_HOST=vault
+      - SPRING_CLOUD_VAULT_PORT=8200
+      - SPRING_CLOUD_VAULT_TOKEN=root  # Vault tokenni environment o'zgaruvchisi sifatida o'rnatish
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=7777777
+    depends_on:
+      - vault
+      - postgres
+
+    ports:
+      - "8870:8870"  # Portni moslashtirish
+    networks:
+      - vault_network
+
+    # PostgreSQL bazasi
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres       # PostgreSQL foydalanuvchi nomi
+      POSTGRES_PASSWORD: 7777777   # PostgreSQL foydalanuvchi paroli
+      POSTGRES_DB: postgres          # PostgreSQL bazasining nomi
+    ports:
+      - "5432:5432"  # PostgreSQL portini ochish
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+volumes:
+  vault-data:
+    driver: local
+  postgres-data:
+    driver: local
+networks:
+  vault_network:
+    driver: bridge
+
+
+
+
+
+
+
+
+
+
+
