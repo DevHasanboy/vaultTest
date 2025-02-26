@@ -7,7 +7,7 @@ services:
     ports:
       - "8200:8200"
     environment:
-      VAULT_DEV_ROOT_TOKEN_ID: root
+      VAULT_DEV_ROOT_TOKEN_ID:  root
     volumes:
       - vault-data:/vault/file
     restart: unless-stopped
@@ -24,9 +24,9 @@ services:
       - SPRING_CLOUD_VAULT_HOST=vault
       - SPRING_CLOUD_VAULT_PORT=8200
       - SPRING_CLOUD_VAULT_TOKEN=root  # Vault tokenni environment o'zgaruvchisi sifatida o'rnatish
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/postgres
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/test
       - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=7777777
+      - SPRING_DATASOURCE_PASSWORD=dev01
     depends_on:
       - vault
       - postgres
@@ -42,8 +42,8 @@ services:
     container_name: postgres
     environment:
       POSTGRES_USER: postgres       # PostgreSQL foydalanuvchi nomi
-      POSTGRES_PASSWORD: 7777777   # PostgreSQL foydalanuvchi paroli
-      POSTGRES_DB: postgres          # PostgreSQL bazasining nomi
+      POSTGRES_PASSWORD: dev01   # PostgreSQL foydalanuvchi paroli
+      POSTGRES_DB: test          # PostgreSQL bazasining nomi
     ports:
       - "5432:5432"  # PostgreSQL portini ochish
     volumes:

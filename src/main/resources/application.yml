@@ -5,21 +5,26 @@ spring:
     vault:
       kv:
         enabled: true
+        backend: secret
+        application-name: test
       authentication: TOKEN
       token: ${SPRING_CLOUD_VAULT_TOKEN:root}
       scheme: http
       host: ${SPRING_CLOUD_VAULT_HOST:localhost}
       port: ${SPRING_CLOUD_VAULT_PORT:8200}
       enabled: true
-      connection-timeout: 50000
-      read-timeout: 30000
+      connection-timeout: 5000
+      read-timeout: 15000
+
   config:
     import: vault://secret/application
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5432/test
     username: postgres
-    password: 7777777
+    password: dev01
     driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
 
   jpa:
     properties:
